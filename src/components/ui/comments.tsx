@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "./button";
-import { Input } from "./input";
+import { useState } from 'react';
+import { Button } from './button';
+import { Input } from './input';
 
 export const Comments = (props) => {
   const [comments, setComments] = useState(props.comments);
@@ -53,7 +53,7 @@ const Comment = ({ message, onClick }) => {
             onClick={() => {
               if (inputMessage.length > 0) {
                 onClick(inputMessage);
-                setInputMessage("");
+                setInputMessage('');
               }
             }}
             size="sm"

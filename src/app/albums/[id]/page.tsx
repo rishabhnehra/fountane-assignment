@@ -1,7 +1,7 @@
-import { Album } from "@/components/ui/album";
-import { Button } from "@/components/ui/button";
-import { Comments } from "@/components/ui/comments";
-import { Input } from "@/components/ui/input";
+import { Album } from '@/components/ui/album';
+import { Button } from '@/components/ui/button';
+import { Comments } from '@/components/ui/comments';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -11,14 +11,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { getToken } from "@/lib/utils";
-import { Metadata } from "next";
+} from '@/components/ui/table';
+import { getToken } from '@/lib/utils';
+import { Metadata } from 'next';
 
 const getAlbum = async (id: string) => {
   const token = await getToken();
   const headers = new Headers();
-  headers.append("Authorization", `Bearer ${token.access_token}`);
+  headers.append('Authorization', `Bearer ${token.access_token}`);
 
   const res = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
     headers,
@@ -26,14 +26,14 @@ const getAlbum = async (id: string) => {
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data');
   }
 
   return res.json();
 };
 
 export const metadata: Metadata = {
-  title: "Album",
+  title: 'Album',
 };
 
 export default async function AlbumDetail({
@@ -60,11 +60,11 @@ export default async function AlbumDetail({
         </p>
 
         <p className="font-semibold text-slate-400">
-          Artists:{" "}
+          Artists:{' '}
           {data.artists.map((artist) => (
             <span className="text-black" key={artist.id}>
               {artist.name}
-              {"  "}
+              {'  '}
             </span>
           ))}
         </p>
@@ -80,15 +80,15 @@ export default async function AlbumDetail({
             comments={[
               {
                 id: 1,
-                message: "Hello",
+                message: 'Hello',
               },
               {
                 id: 2,
-                message: "World",
+                message: 'World',
               },
               {
                 id: 3,
-                message: "!!!",
+                message: '!!!',
               },
             ]}
           />

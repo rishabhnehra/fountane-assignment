@@ -1,22 +1,22 @@
-import { Album } from "@/components/ui/album";
-import { getToken } from "@/lib/utils";
-import Image from "next/image";
+import { Album } from '@/components/ui/album';
+import { getToken } from '@/lib/utils';
+import Image from 'next/image';
 
 const getAlbums = async () => {
   const token = await getToken();
   const headers = new Headers();
-  headers.append("Authorization", `Bearer ${token.access_token}`);
+  headers.append('Authorization', `Bearer ${token.access_token}`);
 
   const res = await fetch(
     `https://api.spotify.com/v1/browse/new-releases?country=IN`,
     {
       headers,
-    }
+    },
   );
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data');
   }
 
   return res.json();
