@@ -15,6 +15,8 @@ import {
 import { getToken } from '@/lib/utils';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 const getAlbum = async (id: string) => {
   const token = await getToken();
   const headers = new Headers();
@@ -32,6 +34,13 @@ const getAlbum = async (id: string) => {
   return res.json();
 };
 
+const getComments = async (id: string) => {
+  const res = await fetch(`http://localhost:3000/api/${id}`);
+  const data = await res.json();
+
+  return data;
+};
+
 export const metadata: Metadata = {
   title: 'Album',
 };
@@ -42,6 +51,7 @@ export default async function AlbumDetail({
   params: { id: string };
 }) {
   const data = await getAlbum(params.id);
+  const comments = await getComments(params.id);
 
   return (
     <div className="flex h-[calc(100vh-4.6rem)]">
@@ -76,22 +86,7 @@ export default async function AlbumDetail({
       <div className="flex flex-col gap-4 border-r-2 flex-none basis-2/4">
         <h3 className="m-4 text-2xl font-bold">Comments</h3>
         <div className="flex flex-col gap-4 mx-4">
-          <Comments
-            comments={[
-              {
-                id: 1,
-                message: 'Hello',
-              },
-              {
-                id: 2,
-                message: 'World',
-              },
-              {
-                id: 3,
-                message: '!!!',
-              },
-            ]}
-          />
+          <Comments id={params.id} comments={comments} />
         </div>
       </div>
     </div>

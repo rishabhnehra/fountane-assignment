@@ -7,7 +7,7 @@ export const Album = (props: {
   id: string;
 }) => {
   return (
-    <Link href={`/albums/${props.id}`}>
+    <a href={`/albums/${props.id}`}>
       <Image
         className="shadow-lg hover:shadow-2xl transition-shadow duration-300 rounded-xl"
         src={props.image.url}
@@ -15,6 +15,6 @@ export const Album = (props: {
         height={props.image.height || 300}
         alt={props.name}
       />
-    </Link>
+    </a>
   );
 };

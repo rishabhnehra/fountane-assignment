@@ -1,6 +1,7 @@
 import { Album } from '@/components/ui/album';
 import { getToken } from '@/lib/utils';
-import Image from 'next/image';
+
+export const dynamic = 'force-dynamic';
 
 const getAlbums = async () => {
   const token = await getToken();

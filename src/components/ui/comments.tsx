@@ -7,34 +7,49 @@ import { Input } from './input';
 export const Comments = (props) => {
   const [comments, setComments] = useState(props.comments);
 
+  const handleSubmit = async (text: string, parentId: number) => {
+    const res = await fetch(`http://localhost:3000/api/${props.id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        text,
+        id: comments.length + 1,
+        parentId,
+      }),
+    });
+    const data = await res.json();
+
+    setComments(data);
+  };
+
   return (
     <>
       {comments.map((comment) => (
         <Comment
-          message={comment.message}
-          onClick={(message) =>
-            setComments((comment) => [
-              ...comment,
-              { id: comment.length, message },
-            ])
-          }
+          text={comment.text}
+          onClick={(text) => {
+            // TODO: refactor
+            handleSubmit(comment.text, comment.parentId);
+          }}
           key={comment.id}
         />
       ))}
       <Comment
-        onClick={(message) =>
-          setComments((comment) => [
-            ...comment,
-            { id: comment.length + 1, message },
-          ])
-        }
+        onClick={(text) => {
+          handleSubmit(text, 0);
+        }}
       />
     </>
   );
 };
 
-const Comment = ({ message, onClick }) => {
-  const [inputMessage, setInputMessage] = useState(message);
+const Comment = ({
+  text,
+  onClick,
+}: {
+  text?: string;
+  onClick: (text: string, parentId: number) => void;
+}) => {
+  const [inputMessage, setInputMessage] = useState(text);
 
   return (
     <div className="rounded-sm  p-2 border-2">
@@ -44,11 +59,11 @@ const Comment = ({ message, onClick }) => {
         name="comment"
         placeholder="Enter comment"
         value={inputMessage}
-        disabled={!!message}
+        disabled={!!text}
         onChange={(e) => setInputMessage(e.target.value)}
       />
       <div className="flex justify-end">
-        {!message ? (
+        {!text ? (
           <Button
             onClick={() => {
               if (inputMessage.length > 0) {
@@ -62,7 +77,7 @@ const Comment = ({ message, onClick }) => {
           </Button>
         ) : (
           <Button
-            onClick={onClick}
+            onClick={() => onClick(inputMessage, 0)}
             size="sm"
             variant="outline"
             className="mr-2"
