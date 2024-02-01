@@ -14,6 +14,8 @@ export async function POST(
 
   if (comments) {
     trackComments.set(params.id, [...comments, res]);
+  } else {
+    trackComments.set(params.id, [res]);
   }
 
   return Response.json(getCommentsFromTrackId(params.id));

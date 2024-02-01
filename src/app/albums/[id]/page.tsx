@@ -1,45 +1,10 @@
 import { Album } from '@/components/ui/album';
-import { Button } from '@/components/ui/button';
 import { Comments } from '@/components/ui/comments';
-import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { getToken } from '@/lib/utils';
 import { Metadata } from 'next';
+import { getAlbum, getComments } from '@/services';
+import { Tracks } from '@/components/ui/tracks';
 
 export const dynamic = 'force-dynamic';
-
-const getAlbum = async (id: string) => {
-  const token = await getToken();
-  const headers = new Headers();
-  headers.append('Authorization', `Bearer ${token.access_token}`);
-
-  const res = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
-    headers,
-  });
-
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-};
-
-const getComments = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/${id}`);
-  const data = await res.json();
-
-  return data;
-};
 
 export const metadata: Metadata = {
   title: 'Album',
@@ -92,26 +57,3 @@ export default async function AlbumDetail({
     </div>
   );
 }
-
-const Tracks = (props: { data: any[] }) => {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">#</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Duration</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {props.data.map((track, index) => (
-          <TableRow key={track.id}>
-            <TableCell className="font-medium">{index + 1}</TableCell>
-            <TableCell>{track.name}</TableCell>
-            <TableCell>{track.duration_ms}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-};
